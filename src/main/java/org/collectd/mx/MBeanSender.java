@@ -23,6 +23,7 @@ import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -131,7 +132,7 @@ public class MBeanSender implements Dispatcher {
         sender.addServer(server);
     }
 
-    public MBeanCollector scheduleTemplate(String name) {
+    public MBeanCollector scheduleTemplate(String name, Long sendInterval) {
         MBeanCollector collector = null;
         try {
             //check for file via path and classpath,
@@ -140,14 +141,17 @@ public class MBeanSender implements Dispatcher {
         } catch (Exception e) {
             _log.log(Level.WARNING, "add template " + name +
                      ": " + e.getMessage(), e);
-        }
+        }     
         if (collector != null) {
+            if(sendInterval!=null) {
+                collector.setInterval(sendInterval);
+            }
             schedule(collector);
         }
         return collector;
     }
 
-    public MBeanCollector scheduleMBean(String name) {
+    public MBeanCollector scheduleMBean(String name, Long sendInterval) {
         try {
             new ObjectName(name);
         } catch (MalformedObjectNameException e) {
@@ -156,16 +160,19 @@ public class MBeanSender implements Dispatcher {
             return null;
         }
         MBeanCollector collector = new MBeanCollector();
+        if(sendInterval!=null) {
+            collector.setInterval(sendInterval);
+        }
         collector.addMBean(name);
         schedule(collector);
         return collector;
     }
 
     public MBeanCollector schedule(String name) {
-        MBeanCollector collector = scheduleTemplate(name);
+        MBeanCollector collector = scheduleTemplate(name,null);
         if (collector == null) {
             //assume ObjectName, e.g. "sigar:*"
-            collector = scheduleMBean(name);
+            collector = scheduleMBean(name,null);
         }
         return collector;
     }
@@ -200,24 +207,26 @@ public class MBeanSender implements Dispatcher {
         });
     }
 
-    public void configure() {
-        //java -Djcd.dest=udp://localhost -Djcd.tmpl=javalang -Djcd.beans=sigar:*
-        String dest = Network.getProperty("jcd.dest");
+    public void configure(Properties props) {
+        //java -Djcd.dest=udp://localhost -Djcd.tmpl=javalang -Djcd.beans=sigar:* -Djcd.sendinterval=60
+        String dest = props.getProperty("jcd.dest");
         if (dest != null) {
             addDestination(dest);
         }
-        String tmpl = Network.getProperty("jcd.tmpl");
+        Long sendInterval = Long.getLong("jcd.sendinterval");         
+        String tmpl = props.getProperty("jcd.tmpl");
         if (tmpl != null) {
             for (String t : tmpl.split(",")) {
-                scheduleTemplate(t);
+                scheduleTemplate(t,sendInterval);
             }
         }
-        String beans = Network.getProperty("jcd.beans");
+        String beans = props.getProperty("jcd.beans");
         if (beans != null) {
             for (String b : beans.split("#")) {
-                scheduleMBean(b);
+                scheduleMBean(b,sendInterval);
             }
         }
+       
     }
 
     protected void init(String args) {
@@ -240,7 +249,7 @@ public class MBeanSender implements Dispatcher {
 
     protected void premainConfigure(String args) {
         addShutdownHook();
-        configure();
+        configure(System.getProperties());
         init(args);
         if (_senders.size() == 0) {
             String dest = UDP + PSEP + Network.DEFAULT_V4_ADDR;
