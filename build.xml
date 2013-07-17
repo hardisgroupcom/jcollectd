@@ -36,8 +36,8 @@
     </javac>
   </target>
 
-  <target name="jar" depends="compile">
-    <jar jarfile="${target}/lib/collectd.jar">
+  <target name="jar" depends="compile,git.revision" >
+    <jar jarfile="${target}/lib/jcollectd-em-${repository.version}.jar">
       <fileset dir="${target}/classes"
               excludes="**/*Test.class" />
       <fileset dir="src/main/resources"/>
@@ -123,4 +123,22 @@
       <arg value="README.markdown"/>
     </exec>
   </target>
+	
+	<available file=".git" type="dir" property="git.present"/>
+
+	<target name="git.revision" description="Store git revision in ${repository.version}" if="git.present">
+	    <exec executable="git" outputproperty="git.revision" failifexecutionfails="false" errorproperty="">
+	        <arg value="describe"/>
+	        <arg value="--tags"/>
+	        <arg value="--always"/>
+	        <arg value="HEAD"/>
+	    </exec>
+	    <condition property="repository.version" value="${git.revision}" else="unknown">
+	        <and>
+	            <isset property="git.revision"/>
+	            <length string="${git.revision}" trim="yes" length="0" when="greater"/>
+	        </and>
+	    </condition>
+	</target>
+	
 </project>
