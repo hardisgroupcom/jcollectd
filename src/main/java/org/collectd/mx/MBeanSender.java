@@ -207,20 +207,20 @@ public class MBeanSender implements Dispatcher {
         });
     }
 
-    public void configure(Properties props) {
+    public void configure() {
         //java -Djcd.dest=udp://localhost -Djcd.tmpl=javalang -Djcd.beans=sigar:* -Djcd.sendinterval=60
-        String dest = props.getProperty("jcd.dest");
+        String dest = Network.getProperty("jcd.dest");
         if (dest != null) {
             addDestination(dest);
         }
         Long sendInterval = Long.getLong("jcd.sendinterval");         
-        String tmpl = props.getProperty("jcd.tmpl");
+        String tmpl = Network.getProperty("jcd.tmpl");
         if (tmpl != null) {
             for (String t : tmpl.split(",")) {
                 scheduleTemplate(t,sendInterval);
             }
         }
-        String beans = props.getProperty("jcd.beans");
+        String beans = Network.getProperty("jcd.beans");
         if (beans != null) {
             for (String b : beans.split("#")) {
                 scheduleMBean(b,sendInterval);
@@ -249,7 +249,7 @@ public class MBeanSender implements Dispatcher {
 
     protected void premainConfigure(String args) {
         addShutdownHook();
-        configure(System.getProperties());
+        configure();
         init(args);
         if (_senders.size() == 0) {
             String dest = UDP + PSEP + Network.DEFAULT_V4_ADDR;
