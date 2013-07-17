@@ -92,7 +92,7 @@ public class MBeanSender implements Dispatcher {
 
     public String getInstanceName() {
         if (_instanceName == null) {
-            _instanceName = Network.getProperty("instance", getRuntimeName());
+            _instanceName = Network.getProperty("jcd.instance", getRuntimeName());
         }
         return _instanceName;
     }
