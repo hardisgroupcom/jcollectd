@@ -87,7 +87,8 @@ public class TypesDB {
         try {
             load(is);
         } finally {
-            is.close();
+            if (is != null)
+                is.close();
         }
     }
 
