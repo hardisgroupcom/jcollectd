@@ -73,7 +73,7 @@ public class MBeanConfig {
             return add(new InputSource(name));
         }
         else {
-            String[] rs = { name, "./etc/" + name, "META-INF/" + name };
+            String[] rs = { name, "etc/" + name, "META-INF/" + name };
             for (int i=0; i<rs.length; i++) {
                 InputStream is =
                     getClass().getClassLoader().getResourceAsStream(rs[i]);
@@ -81,12 +81,17 @@ public class MBeanConfig {
                     return add(is);
                 }
             }
+            String lastTry = "./etc/"+name;
+            if (new File(lastTry).exists()) {
+                return add(new InputSource(lastTry));
+            }
             _log.severe("[jcollectd] unable to read:" 
                     + new File(name).getAbsolutePath() 
                     + " or:" + new File(source).getAbsolutePath()
                     + " or:" + name
                     + " or: ./etc/" + name
-                    + " or: META-INF/" + name);
+                    + " or: META-INF/" + name
+                    + " or: etc/" + name);
             return null;
         }
     }
