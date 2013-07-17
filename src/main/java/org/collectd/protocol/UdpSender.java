@@ -26,14 +26,19 @@ import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.collectd.api.PluginData;
+import org.collectd.mx.MBeanSender;
 
 /**
  * collectd UDP protocol sender.
  * See collectd/src/network.c:network_write
  */
 public class UdpSender extends Sender {
+    private static final Logger _log =
+            Logger.getLogger(UdpSender.class.getName());    
     private List<InetSocketAddress> _servers;
     private DatagramSocket _socket;
     private MulticastSocket _mcast;
@@ -90,6 +95,9 @@ public class UdpSender extends Sender {
     }
 
     private void send(byte[] buffer, int len) throws IOException {
+        if (_log.isLoggable(Level.FINE)) {
+            _log.fine("[jcollect] sending buffer [" + len + "]:" + new String(buffer));
+        }
         for (InetSocketAddress address : _servers) {
             DatagramPacket packet = 
                 new DatagramPacket(buffer, len, address);

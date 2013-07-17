@@ -210,17 +210,28 @@ public class MBeanSender implements Dispatcher {
     public void configure() {
         //java -Djcd.dest=udp://localhost -Djcd.tmpl=javalang -Djcd.beans=sigar:* -Djcd.sendinterval=60
         String dest = Network.getProperty("jcd.dest");
+        _log.info("[jcollectd] jcd.dest="+dest);
         if (dest != null) {
             addDestination(dest);
         }
-        Long sendInterval = Long.getLong("jcd.sendinterval");         
+        
+        String intervalProp = Network.getProperty("jcd.sendinterval","");
+        Long sendInterval = null;
+        if (!intervalProp.isEmpty()) {
+            sendInterval = Long.parseLong(intervalProp);   
+        }
+        _log.info("[jcollectd] jcd.sendinterval="+sendInterval);
+        
         String tmpl = Network.getProperty("jcd.tmpl");
+        _log.info("[jcollectd] jcd.tmpl="+tmpl);
+        
         if (tmpl != null) {
             for (String t : tmpl.split(",")) {
                 scheduleTemplate(t,sendInterval);
             }
         }
         String beans = Network.getProperty("jcd.beans");
+        _log.info("[jcollectd] jcd.beans="+beans);
         if (beans != null) {
             for (String b : beans.split("#")) {
                 scheduleMBean(b,sendInterval);
@@ -253,7 +264,7 @@ public class MBeanSender implements Dispatcher {
         init(args);
         if (_senders.size() == 0) {
             String dest = UDP + PSEP + Network.DEFAULT_V4_ADDR;
-            _log.fine("Adding default destination: " + dest);
+            _log.fine("[jcollectd] Adding default destination: " + dest);
             addDestination(dest);
         }
     }

@@ -66,8 +66,7 @@ public class Network {
     }
 
     public static String getProperty(String name, String defval) {
-        String key = KEY_PREFIX + name;
-        return _props.getProperty(key, System.getProperty(key, defval));
+        return _props.getProperty(name, System.getProperty(name, defval));
     }
 
     public static String getProperty(String name) {
@@ -77,14 +76,15 @@ public class Network {
     private static void loadProperties() {
         String fname = KEY_PREFIX + "properties";
         String file = System.getProperty(fname, fname);
-
+        String absolute = new File(file).getAbsolutePath();
+        
         if (new File(file).exists()) {
             Logger log = Logger.getLogger(Network.class.getName());
             FileInputStream is = null;
             try {
                 is = new FileInputStream(file);
                 _props.load(is);
-                log.fine("Loaded " + file);
+                log.fine("Loaded " + absolute);
             } catch (IOException e) {
                 log.fine("Unable to load " + file + ": " + e);
             }
