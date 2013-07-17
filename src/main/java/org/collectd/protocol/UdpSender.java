@@ -30,7 +30,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.collectd.api.PluginData;
-import org.collectd.mx.MBeanSender;
 
 /**
  * collectd UDP protocol sender.

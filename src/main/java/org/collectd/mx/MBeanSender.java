@@ -23,7 +23,6 @@ import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ThreadFactory;
@@ -35,12 +34,13 @@ import javax.management.MBeanServerConnection;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 
-import org.collectd.protocol.Network;
 import org.collectd.api.Notification;
+import org.collectd.api.ValueList;
 import org.collectd.protocol.Dispatcher;
+import org.collectd.protocol.Network;
 import org.collectd.protocol.Sender;
 import org.collectd.protocol.UdpSender;
-import org.collectd.api.ValueList;
+import org.jboss.mx.util.MBeanServerLocator;
 
 /**
  * Process -javaagent configuration and schedule MBeanCollector objects.
@@ -54,7 +54,7 @@ public class MBeanSender implements Dispatcher {
         "java.lang:type=Runtime";
 
     private MBeanServerConnection _bs =
-        ManagementFactory.getPlatformMBeanServer();
+            ManagementFactory.getPlatformMBeanServer();
 
     private ScheduledExecutorService _scheduler =
         Executors.newScheduledThreadPool(1, new ThreadFactory() {
@@ -72,7 +72,7 @@ public class MBeanSender implements Dispatcher {
     private MBeanConfig _config = new MBeanConfig();
 
     private String _instanceName;
-
+    
     public void setMBeanServerConnection(MBeanServerConnection server) {
         _bs = server;
     }
@@ -259,6 +259,7 @@ public class MBeanSender implements Dispatcher {
     }
 
     protected void premainConfigure(String args) {
+        _log.fine("[jcollectd] MBeanServerConnection:" +_bs);
         addShutdownHook();
         configure();
         init(args);

@@ -175,6 +175,9 @@ public class MBeanCollector implements Runnable {
 
     public void collect(MBeanQuery query, ObjectName name) throws Exception {
         MBeanServerConnection conn = _sender.getMBeanServerConnection();
+        if (_log.isLoggable(Level.FINE)) {
+            _log.fine("[jcollectd] mbeans available:"+conn.getMBeanCount());
+        }
         String plugin = query.getPlugin();
         if (plugin == null) {
             plugin = name.getDomain();
@@ -255,8 +258,8 @@ public class MBeanCollector implements Runnable {
             }
             collect(query, name);
         } catch (Exception e) {
-            //MBean might not be registered yet
-            _log.log(Level.FINE, "collect " + name, e);
+            //MBean might not be registered yet (or anymore)
+            _log.log(Level.FINE, "[jcollectd] collect failed:" + name, e);
         }
     }
 

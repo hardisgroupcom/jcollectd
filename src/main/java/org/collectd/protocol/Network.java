@@ -84,9 +84,9 @@ public class Network {
             try {
                 is = new FileInputStream(file);
                 _props.load(is);
-                log.fine("Loaded " + absolute);
+                log.fine("[jcollectd] Loaded " + absolute);
             } catch (IOException e) {
-                log.fine("Unable to load " + file + ": " + e);
+                log.fine("[jcollectd] Unable to load " + file + ": " + e);
             }
             finally {
                 if (is != null) {
