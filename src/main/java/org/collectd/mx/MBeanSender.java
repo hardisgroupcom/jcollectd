@@ -40,7 +40,6 @@ import org.collectd.protocol.Dispatcher;
 import org.collectd.protocol.Network;
 import org.collectd.protocol.Sender;
 import org.collectd.protocol.UdpSender;
-import org.jboss.mx.util.MBeanServerLocator;
 
 /**
  * Process -javaagent configuration and schedule MBeanCollector objects.
