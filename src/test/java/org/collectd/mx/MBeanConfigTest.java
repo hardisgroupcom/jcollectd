@@ -24,8 +24,7 @@ import junit.framework.TestCase;
 
 public class MBeanConfigTest extends TestCase {
     
-    // TODO make this test work on drone.io
-    public void skip_testJavaLang() throws Exception {
+    public void testJavaLang() throws Exception {
         MBeanConfig config = new MBeanConfig();
         MBeanCollector collector = config.add("javalang");
         assertTrue(collector != null);
