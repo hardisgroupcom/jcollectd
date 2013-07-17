@@ -26,6 +26,7 @@ public class MBeanConfigTest extends TestCase {
 
     //etc/javalang-jcollectd.xml
     public void testJavaLang() throws Exception {
+        System.out.println("Here:"+new File(".").getAbsolutePath());
         MBeanConfig config = new MBeanConfig();
         MBeanCollector collector = config.add("javalang");
         assertTrue(collector != null);

@@ -20,6 +20,7 @@ package org.collectd.mx;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.logging.Logger;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -27,6 +28,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.collectd.protocol.TypesDB;
+import org.collectd.protocol.UdpSender;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -36,6 +38,8 @@ import org.xml.sax.InputSource;
  * Convert jcollectd.xml filters to MBeanCollect objects. 
  */
 public class MBeanConfig {
+    private static final Logger _log =
+            Logger.getLogger(MBeanConfig.class.getName());      
     private XPath _xpath = XPathFactory.newInstance().newXPath();
 
     private String getAttribute(Node node, String name) {
@@ -77,6 +81,10 @@ public class MBeanConfig {
                     return add(is);
                 }
             }
+            _log.severe("[jcollectd] unable to read:" 
+                    + new File(name).getAbsolutePath() 
+                    + " or:" + new File(source).getAbsolutePath()
+                    + " or etc/META-INF/" + name);
             return null;
         }
     }
