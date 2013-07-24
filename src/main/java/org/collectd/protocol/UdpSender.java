@@ -95,7 +95,7 @@ public class UdpSender extends Sender {
 
     private void send(byte[] buffer, int len) throws IOException {
         if (_log.isLoggable(Level.FINE)) {
-            _log.fine("[jcollect] sending buffer [" + len + "]:" + new String(buffer));
+            _log.fine("[jcollect] sending buffer [" + len + "]");
         }
         for (InetSocketAddress address : _servers) {
             DatagramPacket packet = 

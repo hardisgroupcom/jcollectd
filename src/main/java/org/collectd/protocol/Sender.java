@@ -31,7 +31,9 @@ import org.collectd.api.Notification;
 public abstract class Sender implements Dispatcher {
 
     private String _host =
-        Network.getProperty("host", Network.getProperty("hostname"));
+        Network.getProperty(PropertyNames.HOSTALIAS,
+                Network.getProperty(PropertyNames.HOST,
+                        Network.getProperty(PropertyNames.HOSTNAME)));
 
     public Sender() {
     }

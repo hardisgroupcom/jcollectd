@@ -38,6 +38,7 @@ import org.collectd.api.Notification;
 import org.collectd.api.ValueList;
 import org.collectd.protocol.Dispatcher;
 import org.collectd.protocol.Network;
+import org.collectd.protocol.PropertyNames;
 import org.collectd.protocol.Sender;
 import org.collectd.protocol.UdpSender;
 
@@ -91,7 +92,7 @@ public class MBeanSender implements Dispatcher {
 
     public String getInstanceName() {
         if (_instanceName == null) {
-            _instanceName = Network.getProperty("jcd.instance", getRuntimeName());
+            _instanceName = Network.getProperty(PropertyNames.INSTANCE, getRuntimeName());
         }
         return _instanceName;
     }
@@ -208,35 +209,29 @@ public class MBeanSender implements Dispatcher {
 
     public void configure() {
         //java -Djcd.dest=udp://localhost -Djcd.tmpl=javalang -Djcd.beans=sigar:* -Djcd.sendinterval=60
-        String dest = Network.getProperty("jcd.dest");
-        _log.info("[jcollectd] jcd.dest="+dest);
+        String dest = Network.getProperty(PropertyNames.DESTINATION);        
         if (dest != null) {
             addDestination(dest);
         }
         
-        String intervalProp = Network.getProperty("jcd.sendinterval","");
+        String intervalProp = Network.getProperty(PropertyNames.SEND_INTERVAL,"");
         Long sendInterval = null;
         if (!intervalProp.isEmpty()) {
             sendInterval = Long.parseLong(intervalProp);   
-        }
-        _log.info("[jcollectd] jcd.sendinterval="+sendInterval);
-        
-        String tmpl = Network.getProperty("jcd.tmpl");
-        _log.info("[jcollectd] jcd.tmpl="+tmpl);
+        }        
+        String tmpl = Network.getProperty(PropertyNames.TEMPLATE);
         
         if (tmpl != null) {
             for (String t : tmpl.split(",")) {
                 scheduleTemplate(t,sendInterval);
             }
         }
-        String beans = Network.getProperty("jcd.beans");
-        _log.info("[jcollectd] jcd.beans="+beans);
+        String beans = Network.getProperty(PropertyNames.BEANS);
         if (beans != null) {
             for (String b : beans.split("#")) {
                 scheduleMBean(b,sendInterval);
             }
-        }
-       
+        }       
     }
 
     protected void init(String args) {

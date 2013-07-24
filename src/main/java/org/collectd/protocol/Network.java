@@ -55,10 +55,10 @@ public class Network {
     static final int BUFFER_SIZE = 1024; // as per collectd/src/network.c
 
     private static final Properties _props = new Properties();
-    private static final String KEY_PREFIX = "jcd.";
 
     static {
         loadProperties();
+        logProperties();        
     }
 
     public static Properties getProperties() {
@@ -74,7 +74,7 @@ public class Network {
     }
 
     private static void loadProperties() {
-        String fname = KEY_PREFIX + "properties";
+        String fname = PropertyNames.KEY_PREFIX + "properties";
         String file = System.getProperty(fname, fname);
         String absolute = new File(file).getAbsolutePath();
         
@@ -95,6 +95,15 @@ public class Network {
                     } catch (IOException e) {}
                 }
             }
+        }
+    }
+    
+    public static void logProperties() {
+        Logger log = Logger.getLogger(Network.class.getName());
+        for (Object key : _props.keySet()) {
+            // go through my api to catch command line args
+            String val = getProperty((String)key);
+            log.info("[jcollectd] " + key + "=" + val);
         }
     }
 }

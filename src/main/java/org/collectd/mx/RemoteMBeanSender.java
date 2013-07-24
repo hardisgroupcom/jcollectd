@@ -27,6 +27,7 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 import org.collectd.protocol.Network;
+import org.collectd.protocol.PropertyNames;
 
 /**
  * Out-of-process MBeanSender, polling a remote JMX MBeanServer. 
@@ -58,7 +59,7 @@ public class RemoteMBeanSender extends MBeanSender {
     }
 
     public void configure() {
-        String url = Network.getProperty("jcd.mx.url");
+        String url = Network.getProperty(PropertyNames.CONNECTION_URL);
         if (url != null) {
             try {
                 setMBeanServerConnection(url);

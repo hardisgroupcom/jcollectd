@@ -34,6 +34,7 @@ import javax.management.openmbean.CompositeData;
 
 import org.collectd.api.ValueList;
 import org.collectd.protocol.Network;
+import org.collectd.protocol.PropertyNames;
 import org.collectd.protocol.TypesDB;
 
 /**
@@ -44,10 +45,10 @@ public class MBeanCollector implements Runnable {
     private static final Logger _log =
         Logger.getLogger(MBeanCollector.class.getName());
     private static boolean _useDescriptors =
-        "true".equals(Network.getProperty("mx.descriptors", "true"));
+        "true".equals(Network.getProperty(PropertyNames.MX_DESCRIPTORS, "true"));
     private static Method _getDescriptor;
     private static final String _metricTypeField =
-        Network.getProperty("mx.metricTypeField", "metricType");
+        Network.getProperty(PropertyNames.METRIC_TYPE_FIELD, "metricType");
     private MBeanSender _sender;
     private long _interval = 60;
     private Map<String,MBeanQuery> _queries =
@@ -170,6 +171,9 @@ public class MBeanCollector implements Runnable {
         vl.setType(attr.getTypeName());
         vl.setTypeInstance(typeInstance);
         vl.addValue(val);
+        if (_log.isLoggable(Level.FINE)) {
+            _log.fine("[jcollectd] " + vl);
+        }
         _sender.dispatch(vl);
     }
 

@@ -51,7 +51,7 @@ public class UdpReceiver {
     private boolean _isShutdown = false;
 
     protected UdpReceiver() {
-        String addr = Network.getProperty("laddr", Network.DEFAULT_V4_ADDR);
+        String addr = Network.getProperty(PropertyNames.LOCAL_ADDRESS, Network.DEFAULT_V4_ADDR);
         if (addr != null) {
             int ix = addr.indexOf(':'); //XXX ipv6
             if (ix == -1) {
@@ -62,7 +62,7 @@ public class UdpReceiver {
                 _port = Integer.parseInt(addr.substring(ix+1));
             }
         }
-        addr = Network.getProperty("ifaddr");
+        addr = Network.getProperty(PropertyNames.INTERFACE_ADDRESS);
         if (addr != null) {
             try {
                 //-Djcd.ifaddr=tun0

@@ -151,6 +151,7 @@ public class SenderTest
     }
 
     public void dispatch(ValueList vl) {
+        System.out.println(vl);
         _values.add(new ValueList(vl));
     }
 }

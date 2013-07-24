@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.collectd.api.DataSource;
-import org.collectd.api.ValueList;
 import org.collectd.api.Notification;
+import org.collectd.api.ValueList;
 
 /**
  * Dispatch collectd data to stdout.
@@ -32,7 +32,7 @@ import org.collectd.api.Notification;
 public class StdoutDispatcher implements Dispatcher {
 
     private boolean namesOnly =
-        "true".equals(Network.getProperty("namesOnly"));
+        "true".equals(Network.getProperty(PropertyNames.NAMES_ONLY));
 
     public void dispatch(ValueList vl) {
         if (namesOnly) {
