@@ -14,6 +14,20 @@ Example
 	jcd.dest=udp://10.10.135.58:25826
 	# send every 60 seconds
 	jcd.sendinterval=60    
+	
+Other properties
+	
+    jcd.beans
+    jcd.mx.url
+    jcd.instance
+    host
+    hostname
+    jcd.hostalias  // resolve order: alias, host, hostname
+    jcd.namesOnly
+    mx.metricTypeField  // metricType (default)
+    mx.descriptors // true (default)
+    laddr
+    ifaddr
 
 [![Build Status](https://drone.io/github.com/emicklei/jcollectd/status.png)](https://drone.io/github.com/emicklei/jcollectd/latest)
 
