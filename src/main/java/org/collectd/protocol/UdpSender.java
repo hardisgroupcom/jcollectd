@@ -83,6 +83,9 @@ public class UdpSender extends Sender {
     }
 
     protected void write(PluginData data) throws IOException {
+        if (_log.isLoggable(Level.FINE)) {
+            _log.fine("[jcollectd] sending plugin data:" + data);
+        }        
         setDefaults(data);
         int len = _writer.getSize();
         _writer.write(data);
@@ -94,9 +97,6 @@ public class UdpSender extends Sender {
     }
 
     private void send(byte[] buffer, int len) throws IOException {
-        if (_log.isLoggable(Level.FINE)) {
-            _log.fine("[jcollect] sending buffer [" + len + "]");
-        }
         for (InetSocketAddress address : _servers) {
             DatagramPacket packet = 
                 new DatagramPacket(buffer, len, address);

@@ -171,9 +171,6 @@ public class MBeanCollector implements Runnable {
         vl.setType(attr.getTypeName());
         vl.setTypeInstance(typeInstance);
         vl.addValue(val);
-        if (_log.isLoggable(Level.FINE)) {
-            _log.fine("[jcollectd] " + vl);
-        }
         _sender.dispatch(vl);
     }
 
@@ -226,7 +223,7 @@ public class MBeanCollector implements Runnable {
 
             if (obj instanceof CompositeData) {
                 CompositeData data = (CompositeData)obj;
-                String key = attr.getCompositeKey();
+                String key = attr.getCompositeKey();                
                 if (key == null) {
                     //no key specified; collect all
                     Set<String> keys = data.getCompositeType().keySet();
