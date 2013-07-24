@@ -53,8 +53,8 @@ public class MBeanSender implements Dispatcher {
     private static final String RUNTIME_NAME =
         "java.lang:type=Runtime";
 
-    private MBeanServerConnection _bs =
-            ManagementFactory.getPlatformMBeanServer();
+    private MBeanServerConnection _bs;
+        //= ManagementFactory.getPlatformMBeanServer();
 
     private ScheduledExecutorService _scheduler =
         Executors.newScheduledThreadPool(1, new ThreadFactory() {
@@ -234,7 +234,7 @@ public class MBeanSender implements Dispatcher {
         }       
     }
 
-    protected void init(String args) {
+    protected void init(String args) {        
         if (args == null) {
             return;
         }
@@ -253,7 +253,8 @@ public class MBeanSender implements Dispatcher {
     }
 
     protected void premainConfigure(String args) {
-        _log.fine("[jcollectd] MBeanServerConnection:" +_bs);
+        this.locateJBoss();
+        _log.fine("[jcollectd] JBOSS MBeanServer:" +_bs);
         addShutdownHook();
         configure();
         init(args);
@@ -267,5 +268,10 @@ public class MBeanSender implements Dispatcher {
     public static void premain(String args, Instrumentation instr) {
         MBeanSender sender = new MBeanSender();
         sender.premainConfigure(args);
+    }
+
+    public void locateJBoss() {
+        _bs = org.jboss.mx.util.MBeanServerLocator.locateJBoss();
+        
     }
 }

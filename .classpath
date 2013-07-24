@@ -6,5 +6,6 @@
 	<classpathentry kind="src" path="src/test/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="lib" path="/Users/emicklei/Java/jboss-eap-4.3/jboss-as/lib/jboss-jmx.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

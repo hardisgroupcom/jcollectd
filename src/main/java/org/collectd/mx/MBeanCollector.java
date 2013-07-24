@@ -54,6 +54,8 @@ public class MBeanCollector implements Runnable {
     private Map<String,MBeanQuery> _queries =
         new HashMap<String,MBeanQuery>();
 
+    private int trials = 0;
+    
     static {
         if (_useDescriptors) {
             try {
@@ -260,7 +262,16 @@ public class MBeanCollector implements Runnable {
             collect(query, name);
         } catch (Exception e) {
             //MBean might not be registered yet (or anymore)
-            _log.log(Level.FINE, "[jcollectd] collect failed:" + name, e);
+            _log.log(Level.FINE, "[jcollectd] collect failed:" + name, e);            
+            if (trials == 0) {
+                _log.log(Level.FINE, "[jcollectd] locate jboss");
+                trials++;
+                _sender.locateJBoss();
+                this.run(query, name);
+            } else {
+                _log.log(Level.FINE, "[jcollectd] i tried my best, giving up");
+            }
+            
         }
     }
 
