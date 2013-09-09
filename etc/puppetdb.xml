@@ -1,0 +1,66 @@
+<jcollectd-config>
+  <!-- contributed by Roland Kool, 8-2013 -->
+  <mbeans name="puppetdb">
+    <mbean name="com.puppetlabs.puppetdb.command:type=global,*" alias="Command">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    <mbean name="com.puppetlabs.puppetdb.http.server:type=v2,*" alias="HTTPServer">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    <mbean name="com.puppetlabs.puppetdb.query.population:type=default,*" alias="QueryPopulation">
+      <attribute name="Value"/>
+    </mbean>
+    <mbean name="com.puppetlabs.puppetdb.scf.storage:type=default,*" alias="Storage">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    <mbean name="com.jolbox.bonecp:type=BoneCP" alias="Database">
+      <attribute name="CacheHitRatio"/>
+      <attribute name="CacheHits" type="counter"/>
+      <attribute name="CacheMiss" type="counter"/>
+      <attribute name="ConnectionsRequested" type="counter"/>
+      <attribute name="CumulativeConnectionWaitTime" type="counter" alias="ConnWaitTime"/>
+      <attribute name="CumulativeStatementExecutionTime" type="counter" alias="StatementExecTime"/>
+      <attribute name="CumulativeStatementPrepareTime" type="counter" alias="StatementPrepTime"/>
+      <attribute name="StatementsCached" type="counter"/>
+      <attribute name="StatementsExecuted" type="counter"/>
+      <attribute name="StatementsPrepared" type="counter"/>
+      <attribute name="TotalCreatedConnections" type="counter"/>
+      <attribute name="TotalFree"/>
+      <attribute name="TotalLeased"/>
+    </mbean>
+    <!--
+    <mbean name="com.puppetlabs.puppetdb.command:type=replace catalog.1,*" alias="ReplaceCatalog.v1">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    <mbean name="com.puppetlabs.puppetdb.command:type=replace catalog.2,*" alias="ReplaceCatalog.v2">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    <mbean name="com.puppetlabs.puppetdb.command:type=replace facts.1,*" alias="ReplaceFacts.v1">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    <mbean name="com.puppetlabs.puppetdb.command:type=replace facts.2,*" alias="ReplaceFacts.v2">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    <mbean name="com.puppetlabs.puppetdb.command:type=deactivate node.1,*" alias="DeactivateNode.v1">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    <mbean name="com.puppetlabs.puppetdb.command:type=deactivate node.2,*" alias="DeactivateNode.v2">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    <mbean name="com.puppetlabs.puppetdb.http.server:type=v1,*" alias="HTTPServer">
+      <attribute name="Count" type="counter"/>
+      <attribute name="Mean"/>
+    </mbean>
+    -->
+  </mbeans>
+</jcollectd-config>
+

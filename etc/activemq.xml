@@ -1,0 +1,43 @@
+<jcollectd-config>
+  <!-- contributed by Roland Kool, 8-2013 -->
+  <mbeans name="activemq">
+    <mbean name="org.apache.activemq:BrokerName=localhost,Type=Broker" alias="Broker">
+      <attribute name="MemoryPercentUsage"/>
+      <attribute name="StorePercentUsage"/>
+      <attribute name="TempPercentUsage"/>
+      <attribute name="TotalConsumerCount"/>
+      <attribute name="TotalDequeueCount" type="counter"/>
+      <attribute name="TotalEnqueueCount" type="counter"/>
+      <attribute name="TotalMessageCount"/>
+    </mbean>
+
+    <mbean name="org.apache.activemq:BrokerName=localhost,Type=Queue,*" alias="Queue">
+      <attribute name="AverageEnqueueTime"/>
+      <attribute name="ConsumerCount"/>
+      <attribute name="ProducerCount"/>
+      <attribute name="CursorMemoryUsage"/>
+      <attribute name="CursorPercentUsage"/>
+      <attribute name="MemoryPercentUsage"/>
+      <attribute name="DequeueCount" type="counter"/>
+      <attribute name="DispatchCount" type="counter"/>
+      <attribute name="EnqueueCount" type="counter"/>
+      <attribute name="ExpiredCount" type="counter"/>
+      <attribute name="InFlightCount" type="counter"/>
+      <attribute name="QueueSize"/>
+    </mbean>
+
+    <mbean name="org.apache.activemq:BrokerName=localhost,Type=Topic,*" alias="Topic">
+      <attribute name="AverageEnqueueTime"/>
+      <attribute name="ConsumerCount"/>
+      <attribute name="ProducerCount"/>
+      <attribute name="MemoryPercentUsage"/>
+      <attribute name="DequeueCount" type="counter"/>
+      <attribute name="DispatchCount" type="counter"/>
+      <attribute name="EnqueueCount" type="counter"/>
+      <attribute name="ExpiredCount" type="counter"/>
+      <attribute name="InFlightCount" type="counter"/>
+      <attribute name="QueueSize"/>
+    </mbean>
+  </mbeans>
+</jcollectd-config>
+

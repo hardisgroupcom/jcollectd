@@ -1,0 +1,38 @@
+<jcollectd-config>
+  <!-- contributed by Roland Kool, 8-2013 
+  
+  This requires the installation of jcollect-jboss
+  https://github.com/emicklei/jcollectd-jboss
+  
+  -->
+  <mbeans name="jboss">
+    <mbean name="jboss.web:type=ThreadPool,*" alias="ThreadPool">
+      <attribute name="currentThreadCount" alias="Threads_count"/>
+      <attribute name="currentThreadsBusy" alias="Threads_busy"/>
+      <attribute name="maxThreads" alias="Threads_max"/>
+    </mbean>
+    <mbean name="jboss.web:type=GlobalRequestProcessor,*" alias="GlobalRequestProcessor,">
+      <attribute name="requestCount" alias="Request_count" type="counter"/>
+    </mbean>
+    <mbean name="jboss.system:type=ServerInfo" alias="ServerInfo">
+      <attribute name="ActiveThreadCount" alias="ActiveThreadCount"/>
+    </mbean>
+    <mbean name="jboss.system:service=ThreadPool" alias="ThreadPoolService">
+      <attribute name="QueueSize" alias="QueueSize"/>
+    </mbean>
+    <mbean name="jboss.jca:service=WorkManagerThreadPool" alias="WorkManagerThreadPool">
+      <attribute name="QueueSize" alias="QueueSize"/>
+    </mbean>
+    <mbean name="jboss.jca:service=CachedConnectionManager" alias="CachedConnectionManager">
+      <attribute name="InUseConnections" alias="InUseConnections"/>
+    </mbean>
+    <mbean name="jboss.jca:service=ManagedConnectionPool,*" alias="ManagedConnectionPool">
+      <attribute name="InUseConnectionCount" alias="InUseConnections"/>
+      <attribute name="ConnectionCreatedCount" alias="ConnectionCreatedCount" type="counter"/>
+      <attribute name="ConnectionDestroyedCount" alias="ConnectionDestroyedCount" type="counter"/>
+      <attribute name="AvailableConnectionCount" alias="AvailableConnectionCount"/>
+      <attribute name="ConnectionCount" alias="ConnectionCount"/>
+    </mbean>
+  </mbeans>
+</jcollectd-config>
+
