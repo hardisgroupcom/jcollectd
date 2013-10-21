@@ -288,7 +288,14 @@ public class MBeanCollector implements Runnable {
                     return;
                 }
                 for (ObjectName oname : beans) {
-                    run(query, oname);
+                    // let the query decide to include/exclude
+                    if (!query.isExcluded(oname.getCanonicalName())) {
+                        run(query, oname);
+                    } else {
+                        if (_log.isLoggable(Level.FINE)) {
+                            _log.fine("excluding:"+oname);
+                        }
+                    }
                 }
             }
             else {

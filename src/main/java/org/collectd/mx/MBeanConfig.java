@@ -118,8 +118,10 @@ public class MBeanConfig {
                 Node mbean = mbeans.item(j);
                 String objectName = getAttribute(mbean, "name");
                 String objectNameAlias = getAttribute(mbean, "alias");
+                String excludePattern = getAttribute(mbean, "exclude");
                 NodeList attrs = eval("attribute", mbean);
                 MBeanQuery query = collector.addMBean(objectName);
+                query.setExcludePattern(excludePattern);
 
                 if (pluginName != null) {
                     query.setPlugin(pluginName);

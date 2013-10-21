@@ -20,6 +20,8 @@ package org.collectd.mx;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.management.ObjectName;
 
@@ -33,6 +35,9 @@ public class MBeanQuery {
         
     private ObjectName _name;
     private String _alias;
+    private String _excludePattern;
+    private Pattern _compiledExcludePattern;
+    
     private Set<MBeanAttribute> _attributes =
         new HashSet<MBeanAttribute>();
 
@@ -82,5 +87,19 @@ public class MBeanQuery {
 
     public void addAttribute(MBeanAttribute attribute) {
         _attributes.add(attribute);
+    }
+
+    public void setExcludePattern(String excludePattern) {
+        _excludePattern = excludePattern;
+        if (excludePattern != null) {
+            _compiledExcludePattern = Pattern.compile(excludePattern);
+        }
+    }
+    
+    public boolean isExcluded(String beanName) {
+        if (_excludePattern == null) return false;
+        if (_excludePattern.length() == 0) return false;
+        Matcher m = _compiledExcludePattern.matcher(beanName);
+        return m.find();
     }
 }

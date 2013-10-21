@@ -5,6 +5,7 @@ This fork add/changes the following:
 - add fine logging on UpdSender
 - add logging of properties read (from JVM or from file)
 - sanitize plugin,plugin-instance and type (replace dashes and spaces by dots)
+- add exclude attribute for mbean declaration; beans that match will be excluded. only applicable if name is a pattern.
 
 Using
 	-Djcd.properties=/tmp/jcd.properties
