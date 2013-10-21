@@ -65,8 +65,8 @@ public class PluginData {
         return _plugin;
     }
 
-    public void setPlugin(String plugin) {
-        _plugin = plugin;
+    public void setPlugin(String plugin) {        
+        _plugin = sanitized(plugin);
     }
 
     public String getPluginInstance() {
@@ -74,7 +74,7 @@ public class PluginData {
     }
 
     public void setPluginInstance(String pluginInstance) {
-        _pluginInstance = pluginInstance;
+        _pluginInstance = sanitized(pluginInstance);
     }
 
     public String getType() {
@@ -82,7 +82,7 @@ public class PluginData {
     }
 
     public void setType(String type) {
-        _type = type;
+        _type = sanitized(type);
     }
 
     public String getTypeInstance() {
@@ -122,6 +122,24 @@ public class PluginData {
         StringBuffer sb = new StringBuffer();
         sb.append('[').append(new Date(_time)).append("] ");
         sb.append(getSource());
+        return sb.toString();
+    }
+    
+    /**
+     * Return a new string in which spaces and dashes are replaced by dots.
+     * @param input
+     * @return
+     */
+    private String sanitized(String input) {
+        StringBuilder sb = new StringBuilder(input.length());
+        for (int c=0;c<input.length();c++) {
+            char each = input.charAt(c);
+            if (each == ' ' || each == '-') {
+                sb.append('.');
+            } else {
+                sb.append(each);
+            }
+        }
         return sb.toString();
     }
 }

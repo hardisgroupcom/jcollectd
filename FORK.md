@@ -4,6 +4,7 @@ This fork add/changes the following:
 - includes the send interval option (jcd.sendinterval)
 - add fine logging on UpdSender
 - add logging of properties read (from JVM or from file)
+- sanitize plugin,plugin-instance and type (replace dashes and spaces by dots)
 
 Using
 	-Djcd.properties=/tmp/jcd.properties
