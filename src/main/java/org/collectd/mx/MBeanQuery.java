@@ -95,11 +95,13 @@ public class MBeanQuery {
             _compiledExcludePattern = Pattern.compile(excludePattern);
         }
     }
-    
+    /**
+     * @param beanName
+     * @return true if beanName is matched against the excludePattern (if set)
+     */
     public boolean isExcluded(String beanName) {
         if (_excludePattern == null) return false;
         if (_excludePattern.length() == 0) return false;
-        Matcher m = _compiledExcludePattern.matcher(beanName);
-        return m.find();
+        return _compiledExcludePattern.matcher(beanName).matches();
     }
 }
