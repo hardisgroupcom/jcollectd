@@ -126,7 +126,7 @@ public class PluginData {
     }
     
     /**
-     * Return a new string in which spaces and dashes are replaced by dots.
+     * Return a new string in which spaces are removed.
      * @param input
      * @return
      */
@@ -134,9 +134,7 @@ public class PluginData {
         StringBuilder sb = new StringBuilder(input.length());
         for (int c=0;c<input.length();c++) {
             char each = input.charAt(c);
-            if (each == ' ' || each == '-') {
-                sb.append('.');
-            } else {
+            if (each != ' ') {              
                 sb.append(each);
             }
         }
