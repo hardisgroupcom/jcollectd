@@ -38,10 +38,12 @@
 
   <target name="jar" depends="compile,git.revision" >
     <jar jarfile="${target}/lib/jcollectd-em-${repository.version}.jar">
+	  <!-- do not include the examples in the jar -->
       <fileset dir="${target}/classes"
-              excludes="**/*Test.class" />
-      <fileset dir="src/main/resources"/>
-      <fileset dir="." includes="etc/*.xml"/>
+              excludes="**/*Test.class;*.xml" />  
+      <fileset dir="src/main/resources"/>          
+	  <!-- do not include the examples in the jar -->
+      <!-- fileset dir="." includes="etc/*.xml"/ -->
       <manifest>
         <attribute name="Main-Class"
                    value="org.collectd.mx.MBeanReceiver"/>
