@@ -1,0 +1,98 @@
+import static org.gradle.api.JavaVersion.*
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'org.collectd'
+version = "1.0.0-bolcom"
+
+repositories { jcenter() }
+
+sourceCompatibility = VERSION_1_6
+targetCompatibility = VERSION_1_6
+
+// In this section you declare the dependencies for your production and test code
+dependencies { testCompile "junit:junit:4.11" }
+
+jar {
+    manifest {
+        attributes ('Main-Class': 'org.collectd.mx.MBeanReceiver',
+                    'Premain-Class': 'org.collectd.mx.RemoteMBeanSender')
+    }
+
+    // Get the git commit hash (and add it to the manifest) in a doFirst (instead of a config block) so it only actually
+    // runs if the task is run (and not if the task is UP-TO-DATE)
+    doFirst() { jar.manifest.attributes('Commit': getGitCommitHash()) }
+}
+
+javadoc {
+    project.configure(options) {
+        author = "false"
+        bottom = "Copyright &#169; 2009 <a target=\"_top\" href=\"http://www.hyperic.com/\">Hyperic, Inc.</a>. All Rights Reserved."
+        charSet = "UTF-8"
+        docTitle = "Jcollectd"
+        header = "<b>Java collectd API</b>"
+        use = "true"
+        version = "false"
+        windowTitle = "Java collectd API"
+    }
+}
+
+task generateHtmlFromMarkdown {
+    inputs.file 'README.markdown'
+    outputs.file "$buildDir/README.html"
+
+    doLast() {
+        file(buildDir).mkdir() // Not sure why we need this (outputs.file should do this for us) but we do
+
+        new ByteArrayOutputStream().withStream { os ->
+            def result = exec {
+                executable = 'markdown'
+                args = ['README.markdown']
+                standardOutput = os
+            }
+            outputs.files.singleFile.text = os.toString()
+        }
+    }
+}
+
+task assembleBinaryDistro(type: Tar) {
+    compression 'gzip'
+
+    from (projectDir) {
+        include 'build.gradle'
+        include 'LICENSE'
+        include 'README.markdown'
+        include 'etc/*.xml'
+    }
+    from generateHtmlFromMarkdown.outputs
+
+    into('lib') { from jar.outputs }
+    into('javadoc') { from javadoc.outputs }
+    into('src/main') { from sourceSets.main.allJava }
+    into('src/test') { from sourceSets.test.allJava }
+}
+
+// Get the git commit hash for the current tree using the system git executable.
+// The executable must but on the PATH for this to work. If there is any type of error
+// the method will return "unknown"
+def getGitCommitHash() {
+    def hashOutput = new ByteArrayOutputStream()
+    def hashError = new ByteArrayOutputStream()
+
+    def result = exec {
+        executable = 'git'
+        args = ['describe', '--tags', '--always', 'HEAD']
+        standardOutput = hashOutput
+        errorOutput = hashError
+        ignoreExitValue = true
+    }
+
+    if(result.getExitValue() != 0) {
+        logger.warn "Something with wrong while getting the git commit hash. See error output below. Using 'unknown' as the commit hash value."
+        logger.warn hashError.toString()
+        return "unknown"
+    }
+
+    return hashOutput.toString()
+}

@@ -6,7 +6,8 @@ This fork add/changes the following:
 - add logging of properties read (from JVM or from file)
 - sanitize plugin,plugin-instance and type (remove spaces)
 - add exclude attribute for mbean declaration; beans that match will be excluded. (e.g. exclude=".\*Survivor.\*" ). only applicable if name is a pattern
-- remove the examples xml documents from the generated jar 
+- remove the examples xml documents from the generated jar
+- uses Gradle to build the project instead of Ant
 
 Using
 	-Djcd.properties=/tmp/jcd.properties

@@ -1,4 +1,7 @@
-target
+build
 .settings
-
+.gradle
 .DS_Store
+.idea
+*.iml
+README.html
