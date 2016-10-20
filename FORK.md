@@ -2,13 +2,10 @@ This fork add/changes the following:
 
 - includes the (modified) commit ISSUE-1 from philiphoy/jcollectd (Network.getProp)
 - includes the send interval option (jcd.sendinterval)
-- add fine logging on UpdSender
-- add logging of properties read (from JVM or from file)
-- sanitize plugin,plugin-instance and type (remove spaces)
-- add exclude attribute for mbean declaration; beans that match will be excluded. (e.g. exclude=".\*Survivor.\*" ). only applicable if name is a pattern
-- remove the examples xml documents from the generated jar
-- uses Gradle to build the project instead of Ant
-
+- includes the improvments from bolcom/jcollectd
+- add common redisLog4jAppender regards to hardisgroupcom/log4j-redis-appender 
+- add common redisLogbackAppender regards to hardisgroupcom/logback-redis-appender
+- add common wagon regards to hardis framework
 Using
 	-Djcd.properties=/tmp/jcd.properties
   

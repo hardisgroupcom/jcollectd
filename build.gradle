@@ -4,7 +4,7 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 group = 'org.collectd'
-version = "1.0.0-bolcom"
+version = "hardisgroupcom.1.0.0"
 
 repositories { jcenter() }
 
@@ -22,7 +22,10 @@ jar {
 
     // Get the git commit hash (and add it to the manifest) in a doFirst (instead of a config block) so it only actually
     // runs if the task is run (and not if the task is UP-TO-DATE)
-    doFirst() { jar.manifest.attributes('Commit': getGitCommitHash()) }
+   // doFirst() { jar.manifest.attributes('Commit': getGitCommitHash()) }
+    from (projectDir) {   
+        include 'etc/*.xml'
+    }
 }
 
 javadoc {
@@ -64,6 +67,7 @@ task sourcesJar(type: Jar, dependsOn: classes) {
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
+
 }
 
 artifacts {

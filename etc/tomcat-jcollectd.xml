@@ -1,9 +1,24 @@
 <jcollectd-config>
   <mbeans name="tomcat">
-    <mbean name="Catalina:type=GlobalRequestProcessor,*" alias="GRP">
+    <mbean name="Catalina:type=GlobalRequestProcessor,*" alias="GlobalRequestProcessor">
       <attribute name="bytesReceived" alias="received" units="bytes" type="counter"/>
       <attribute name="bytesSent" alias="sent" units="bytes" type="counter"/>
       <attribute name="errorCount" alias="errors" type="counter"/>
+      <attribute name="requestCount" alias="requests" type="counter"/>
+      <attribute name="processingTime" alias="processing_time" type="counter"/>
+    </mbean>
+    <mbean name="Catalina:type=StringCache,host=localhost,*" alias="StringCache">
+      <attribute name="accessCount" alias="access" type="counter"/>
+      <attribute name="hitCount" alias="hits" type="counter"/>
+      <attribute name="cacheSize" alias="size"/>
+    </mbean>
+    <mbean name="Catalina:type=Manager,host=localhost,*" alias="Sessions">
+      <attribute name="activeSessions"/>
+      <attribute name="rejectedSessions" type="counter"/>
+    </mbean>
+    <mbean name="Catalina:type=ThreadPool,*" alias="ThreadPool">
+      <attribute name="currentThreadCount" alias="count" type="counter"/>
+      <attribute name="currentThreadsBusy" alias="busy" type="counter"/>
     </mbean>
   </mbeans>
 </jcollectd-config>
