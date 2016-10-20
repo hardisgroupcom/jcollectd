@@ -30,6 +30,4 @@ Other properties
     laddr
     ifaddr
 
-[![Build Status](https://drone.io/github.com/emicklei/jcollectd/status.png)](https://drone.io/github.com/emicklei/jcollectd/latest)
-
-emicklei@bol.com
+christian.senet@hardis.fr
