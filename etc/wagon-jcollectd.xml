@@ -1,0 +1,10 @@
+<jcollectd-config>
+	<mbeans name="wagon">
+		<mbean name="com.hardis.wagon.jmx:type=WagonMBean" alias="wagon">
+			<attribute name="activeSessions" alias="activeSessions" />
+			<attribute name="activePrograms" alias="activePrograms" />
+			<attribute name="CountCacheableProperty" alias="CountCacheableProperty" />
+			<attribute name="PercentSearchPropertyInCache" alias="PercentSearchPropertyInCache" />	
+		</mbean>
+	</mbeans>
+</jcollectd-config>

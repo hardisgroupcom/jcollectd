@@ -1,0 +1,60 @@
+<jcollectd-config>
+  <mbeans name="ehcache">
+    <mbean name="net.sf.ehcache:type=CacheStatistics,name=dongleCache,*" alias="dongleCache">
+      <attribute name="CacheHits" alias="cachehits" type="counter"/>
+      <attribute name="CacheMisses" alias="cachemisses" type="counter"/>
+      <attribute name="CacheHitPercentage" alias="cachehitpercentage"/>
+      <attribute name="InMemoryHits" alias="inmemoryhits" type="counter"/>
+      <attribute name="InMemoryMisses" alias="inmemorymisses" type="counter"/>
+      <attribute name="InMemoryHitPercentage" alias="inmemoryhitpercentage"/>
+      <attribute name="OnDiskHits" alias="ondiskhits" type="counter"/>
+      <attribute name="OnDiskMisses" alias="ondiskmisses" type="counter"/>
+      <attribute name="OnDiskHitPercentage" alias="ondiskhitpercentage"/>
+      <attribute name="ObjectCount" alias="objectcount"/>
+      <attribute name="DiskStoreObjectCount" alias="ondiskcount"/>
+      <attribute name="MemoryStoreObjectCount" alias="memorycount"/>
+    </mbean>
+    <mbean name="net.sf.ehcache:type=CacheStatistics,name=wagonDataCache,*" alias="wagonDataCache">
+      <attribute name="CacheHits" alias="cachehits" type="counter"/>
+      <attribute name="CacheMisses" alias="cachemisses" type="counter"/>
+      <attribute name="CacheHitPercentage" alias="cachehitpercentage"/>
+      <attribute name="InMemoryHits" alias="inmemoryhits" type="counter"/>
+      <attribute name="InMemoryMisses" alias="inmemorymisses" type="counter"/>
+      <attribute name="InMemoryHitPercentage" alias="inmemoryhitpercentage"/>
+      <attribute name="OnDiskHits" alias="ondiskhits" type="counter"/>
+      <attribute name="OnDiskMisses" alias="ondiskmisses" type="counter"/>
+      <attribute name="OnDiskHitPercentage" alias="ondiskhitpercentage"/>
+      <attribute name="ObjectCount" alias="objectcount"/>
+      <attribute name="DiskStoreObjectCount" alias="ondiskcount"/>
+      <attribute name="MemoryStoreObjectCount" alias="memorycount"/>
+    </mbean>
+    <mbean name="net.sf.ehcache:type=CacheStatistics,name=wagonRequestCache,*" alias="wagonRequestCache">
+      <attribute name="CacheHits" alias="cachehits" type="counter"/>
+      <attribute name="CacheMisses" alias="cachemisses" type="counter"/>
+      <attribute name="CacheHitPercentage" alias="cachehitpercentage"/>
+      <attribute name="InMemoryHits" alias="inmemoryhits" type="counter"/>
+      <attribute name="InMemoryMisses" alias="inmemorymisses" type="counter"/>
+      <attribute name="InMemoryHitPercentage" alias="inmemoryhitpercentage"/>
+      <attribute name="OnDiskHits" alias="ondiskhits" type="counter"/>
+      <attribute name="OnDiskMisses" alias="ondiskmisses" type="counter"/>
+      <attribute name="OnDiskHitPercentage" alias="ondiskhitpercentage"/>
+      <attribute name="ObjectCount" alias="objectcount"/>
+      <attribute name="DiskStoreObjectCount" alias="ondiskcount"/>
+      <attribute name="MemoryStoreObjectCount" alias="memorycount"/>
+    </mbean>
+    <mbean name="net.sf.ehcache:type=CacheStatistics,name=wagonUnlimitedCache,*" alias="wagonUnlimitedCache">
+      <attribute name="CacheHits" alias="cachehits" type="counter"/>
+      <attribute name="CacheMisses" alias="cachemisses" type="counter"/>
+      <attribute name="CacheHitPercentage" alias="cachehitpercentage"/>
+      <attribute name="InMemoryHits" alias="inmemoryhits" type="counter"/>
+      <attribute name="InMemoryMisses" alias="inmemorymisses" type="counter"/>
+      <attribute name="InMemoryHitPercentage" alias="inmemoryhitpercentage"/>
+      <attribute name="OnDiskHits" alias="ondiskhits" type="counter"/>
+      <attribute name="OnDiskMisses" alias="ondiskmisses" type="counter"/>
+      <attribute name="OnDiskHitPercentage" alias="ondiskhitpercentage"/>
+      <attribute name="ObjectCount" alias="objectcount"/>
+      <attribute name="DiskStoreObjectCount" alias="ondiskcount"/>
+      <attribute name="MemoryStoreObjectCount" alias="memorycount"/>
+    </mbean>
+  </mbeans>
+</jcollectd-config>

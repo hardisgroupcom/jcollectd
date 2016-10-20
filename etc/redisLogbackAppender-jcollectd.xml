@@ -1,0 +1,16 @@
+<jcollectd-config>
+  <mbeans name="redisLogbackAppender">
+    <mbean name="com.hardis.logback:type=FailoverRedisAppender" alias="RedisLogbackAppender">
+      <attribute name="ConnectCounter" type="counter"/>
+      <attribute name="ConnectFailures" type="counter"/>
+      <attribute name="EventCounter" type="counter"/>
+      <attribute name="EventsTotalSize" type="counter"/>
+      <attribute name="EventsPushed" type="counter"/>
+      <attribute name="EventsDroppedInPush" type="counter"/>
+      <attribute name="EventsDroppedInQueueing" type="counter"/>
+      <attribute name="EventsDroppedInFormatting" type="counter"/>
+      <attribute name="EventQueueSize" />
+      <attribute name="BatchPurges" type="counter"/>
+    </mbean>
+  </mbeans>
+</jcollectd-config>
