@@ -12,7 +12,10 @@ sourceCompatibility = VERSION_1_6
 targetCompatibility = VERSION_1_6
 
 // In this section you declare the dependencies for your production and test code
-dependencies { testCompile "junit:junit:4.11" }
+dependencies {
+    runtime files(org.gradle.internal.jvm.Jvm.current().toolsJar) 
+    testCompile "junit:junit:4.11" 
+}
 
 jar {
     manifest {

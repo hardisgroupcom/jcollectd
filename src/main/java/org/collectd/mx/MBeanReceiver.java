@@ -18,6 +18,7 @@
 
 package org.collectd.mx;
 
+import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.net.DatagramSocket;
 import java.net.MulticastSocket;
@@ -27,14 +28,13 @@ import javax.management.MBeanServerFactory;
 import org.collectd.protocol.Dispatcher;
 import org.collectd.protocol.UdpReceiver;
 
+import com.sun.tools.attach.VirtualMachine;
+
 /**
- * Extend UdpReceiver, dispatching collectd data to a
- * CollectdMBeanRegistry instance.  Invoked via Main-Class:
- * java -jar collectd.jar 
+ * Extend UdpReceiver, dispatching collectd data to a CollectdMBeanRegistry
+ * instance. Invoked via Main-Class: java -jar collectd.jar
  */
-public class MBeanReceiver
-    extends UdpReceiver
-    implements Runnable {
+public class MBeanReceiver extends UdpReceiver implements Runnable {
 
     private static final String MX = "com.sun.management.jmxremote";
     private static final String DMX = "-D" + MX;
@@ -50,19 +50,17 @@ public class MBeanReceiver
     private void setup() throws Exception {
         DatagramSocket socket = getSocket();
         if (socket instanceof MulticastSocket) {
-            MulticastSocket mcast = (MulticastSocket)socket;
+            MulticastSocket mcast = (MulticastSocket) socket;
             System.err.println("Multicast interface=" + mcast.getInterface());
         }
-        System.err.println(getListenAddress() + ":" +
-                           getPort() +
-                           " listening...");
+        System.err.println(getListenAddress() + ":" + getPort() + " listening...");
         listen();
     }
 
     public void run() {
         try {
             setup();
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -86,7 +84,7 @@ public class MBeanReceiver
         }
         boolean hasMx = false;
 
-        for (int i=0; i<args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             if (args[i].startsWith(DMX)) {
                 hasMx = true;
                 break;
@@ -99,7 +97,24 @@ public class MBeanReceiver
             System.err.print("Enabling " + DMX + "...");
             System.setProperty(MX, "true");
             //jdk 6 has a better way, but this works w/ 5 + 6
-            sun.management.Agent.startAgent();
+            // sun.management.Agent.startAgent();
+            String CONNECTOR_ADDRESS = "com.sun.management.jmxremote.localConnectorAddress";
+            String pid = ManagementFactory.getRuntimeMXBean().getName().split("@")[0];
+            // attach to the target application
+            VirtualMachine vm = VirtualMachine.attach(pid);
+
+            // get the connector address
+            String connectorAddress = vm.getAgentProperties().getProperty(CONNECTOR_ADDRESS);
+
+            // no connector address, so we start the JMX agent
+            if (connectorAddress == null) {
+                String agent = vm.getSystemProperties().getProperty("java.home") + File.separator + "lib" + File.separator + "management-agent.jar";
+                vm.loadAgent(agent);
+
+                // agent is started, get the connector address
+                connectorAddress = vm.getAgentProperties().getProperty(CONNECTOR_ADDRESS);
+            }
+
             hasMx = hasMBeanServer();
             System.err.println(hasMx ? "ok" : "failed");
             return hasMx;
@@ -110,6 +125,7 @@ public class MBeanReceiver
     }
 
     public static void main(String[] args) throws Exception {
+
         if (!checkMxAgent(args)) {
             System.err.println("Try using: java " + DMX + " ...");
             return;
@@ -119,12 +135,11 @@ public class MBeanReceiver
         lt.start();
 
         boolean launchJconsole = false;
-        for (int i=0; i<args.length; i++) {
+        for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if (arg.equals("-jconsole")) {
                 launchJconsole = true;
-            }
-            else {
+            } else {
                 System.err.println("Unknown argument: " + arg);
                 return;
             }
@@ -140,8 +155,7 @@ public class MBeanReceiver
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             }
-        }
-        else {
+        } else {
             lt.join();
         }
     }
