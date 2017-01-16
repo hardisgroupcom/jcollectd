@@ -28,7 +28,7 @@ public class MBeanConfigTest extends TestCase {
         MBeanConfig config = new MBeanConfig();
         MBeanCollector collector = config.add("javalang");
         assertTrue(collector != null);
-        assertTrue(collector.getQueries().size() == 4);
+        assertTrue(collector.getQueries().size() == 7);
     }
 
     public void testJavaLangOS() throws Exception {
