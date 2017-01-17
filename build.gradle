@@ -4,7 +4,8 @@ apply plugin: 'java'
 apply plugin: 'maven'
 
 group = 'org.collectd'
-version = "hardisgroupcom.1.0.1"
+
+version = '1.0.1'
 
 repositories { jcenter() }
 
@@ -18,6 +19,7 @@ dependencies {
 }
 
 jar {
+    appendix 'hardisgroupcom'
     manifest {
         attributes ('Main-Class': 'org.collectd.mx.MBeanReceiver',
                     'Premain-Class': 'org.collectd.mx.RemoteMBeanSender')
@@ -44,6 +46,15 @@ javadoc {
     }
 }
 
+uploadArchives {
+  repositories {
+        mavenDeployer {
+            repository(url: project.ext.repoURL)
+        }
+    }
+}
+
+
 task generateHtmlFromMarkdown {
     inputs.file 'README.markdown'
     outputs.file "$buildDir/README.html"
@@ -63,11 +74,13 @@ task generateHtmlFromMarkdown {
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
+    appendix 'hardisgroupcom'
     classifier = 'sources'
     from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
+    appendix 'hardisgroupcom'
     classifier = 'javadoc'
     from javadoc.destinationDir
 
@@ -121,3 +134,4 @@ def getGitCommitHash() {
 
     return hashOutput.toString()
 }
+
