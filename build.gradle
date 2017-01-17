@@ -50,6 +50,9 @@ uploadArchives {
   repositories {
         mavenDeployer {
             repository(url: project.ext.repoURL)
+            {
+            authentication(userName: project.ext.userName, password: project.ext.password)
+            }
         }
     }
 }
