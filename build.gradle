@@ -45,7 +45,7 @@ javadoc {
         windowTitle = "Java collectd API"
     }
 }
-
+//  run gradlew clean uploadArchives -PrepoURL=https://host/nexus/content/repositories/xxx-release/ -PuserName=xxx -Ppassword=xxx
 uploadArchives {
   repositories {
         mavenDeployer {
