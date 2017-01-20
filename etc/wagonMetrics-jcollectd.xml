@@ -1,0 +1,35 @@
+<jcollectd-config>
+	<mbeans name="metrics">
+		<mbean name="metrics:name=com.hardis.wagon.runtime.communication.websocket.WagonSyncServlet.responses" alias="WagonSyncServlet.responsesTime">
+			<attribute name="Min" type="counter" />
+			<attribute name="Max" type="counter" />
+			<attribute name="Mean" type="counter" />
+		</mbean>
+
+		<mbean name="metrics:name=com.hardis.wagon.runtime.communication.websocket.WagonSyncServlet.requests" alias="WagonSyncServlet.requests">
+			<attribute name="Count" type="gauge" />
+			<attribute name="OneMinuteRate" type="counter" />
+			<attribute name="FiveMinuteRate" type="counter" />
+			<attribute name="FifteenMinuteRate" type="counter" />
+			<attribute name="MeanRate" type="gauge" />
+		</mbean>
+
+
+		<mbean name="metrics:name=com.hardis.wagon.runtime.communication.servlet.WagonServlet.responses" alias="WagonServlet.responsesTime">
+			<attribute name="Min" type="counter" />
+			<attribute name="Max" type="counter" />
+			<attribute name="Mean" type="counter" />
+		</mbean>
+
+		<mbean name="metrics:name=com.hardis.wagon.runtime.communication.servlet.WagonServlet.requests" alias="WagonServlet.requests">
+			<attribute name="Count" type="gauge" />
+			<attribute name="OneMinuteRate" type="counter" />
+			<attribute name="FiveMinuteRate" type="counter" />
+			<attribute name="FifteenMinuteRate" type="counter" />
+			<attribute name="MeanRate" type="gauge" />
+		</mbean>
+
+
+	</mbeans>
+
+</jcollectd-config>

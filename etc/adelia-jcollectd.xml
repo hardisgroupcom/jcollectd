@@ -1,0 +1,7 @@
+<jcollectd-config>
+	<mbeans name="adelia">
+		<mbean name="Adelia:type=Adelia,name=MwRemoteLifecycleManager" alias="adelia">
+		    <attribute name="ActiveServers" alias="activeServers" />
+		</mbean>
+	</mbeans>
+</jcollectd-config>
