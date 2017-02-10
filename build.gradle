@@ -2,24 +2,75 @@ import static org.gradle.api.JavaVersion.*
 
 apply plugin: 'java'
 apply plugin: 'maven'
+apply plugin: 'signing'
 
-group = 'org.collectd'
-
-version = '1.0.2'
+group = 'com.hardis.collectd'
+archivesBaseName = "jcollectd"
+version = '1.0.3-SNAPSHOT'
 
 repositories { jcenter() }
 
 sourceCompatibility = VERSION_1_6
 targetCompatibility = VERSION_1_6
 
-// In this section you declare the dependencies for your production and test code
-dependencies {
-    compile files(org.gradle.internal.jvm.Jvm.current().toolsJar) 
-    testCompile "junit:junit:4.11" 
+task javadocJar(type: Jar, dependsOn: javadoc) {    
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task generateHtmlFromMarkdown {
+    inputs.file 'README.markdown'
+    outputs.file "$buildDir/README.html"
+
+    doLast() {
+        file(buildDir).mkdir() // Not sure why we need this (outputs.file should do this for us) but we do
+
+        new ByteArrayOutputStream().withStream { os ->
+            def result = exec {
+                executable = 'markdown'
+                args = ['README.markdown']
+                standardOutput = os
+            }
+            outputs.files.singleFile.text = os.toString()
+        }
+    }
+}
+
+task assembleBinaryDistro(type: Tar) {
+    compression 'gzip'
+
+    from (projectDir) {
+        include 'build.gradle'
+        include 'LICENSE'
+        include 'README.markdown'
+        include 'etc/*.xml'
+    }
+    from generateHtmlFromMarkdown.outputs
+
+    into('lib') { 
+      from jar.outputs
+      from sourcesJar.outputs
+    }
+    into('javadoc') { from javadoc.outputs }
+    into('src/main') { from sourceSets.main.allJava }
+    into('src/test') { from sourceSets.test.allJava }
+}
+
+artifacts {
+    archives sourcesJar
+    archives javadocJar
+}
+
+signing {
+    sign configurations.archives
 }
 
 jar {
-    appendix 'hardisgroupcom'
     manifest {
         attributes ('Main-Class': 'org.collectd.mx.MBeanReceiver',
                     'Premain-Class': 'org.collectd.mx.RemoteMBeanSender')
@@ -45,73 +96,55 @@ javadoc {
         windowTitle = "Java collectd API"
     }
 }
-//  run gradlew clean uploadArchives -PrepoURL=https://host/nexus/content/repositories/xxx-release/ -PuserName=xxx -Ppassword=xxx
+
 uploadArchives {
   repositories {
-        mavenDeployer {
-            repository(url: project.ext.repoURL)
-            {
-            authentication(userName: project.ext.userName, password: project.ext.password)
-            }
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {       
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+      }
+
+      pom.project {
+        name 'jcollectd'
+        packaging 'jar'
+        // optionally artifactId can be defined here 
+        description 'The jcollectd package implements the collectd protocol in Java, making it possible for Java applications to push data into collectd over the wire.'
+        url 'https://github.com/hardisgroupcom/jcollectd'
+
+        scm {
+          connection 'scm:git:https://github.com/hardisgroupcom/jcollectd.git'
+          developerConnection 'scm:git:ssh://github.com/hardisgroupcom/jcollectd.git'
+          url 'https://github.com/hardisgroupcom/jcollectd'
         }
-    }
-}
 
-
-task generateHtmlFromMarkdown {
-    inputs.file 'README.markdown'
-    outputs.file "$buildDir/README.html"
-
-    doLast() {
-        file(buildDir).mkdir() // Not sure why we need this (outputs.file should do this for us) but we do
-
-        new ByteArrayOutputStream().withStream { os ->
-            def result = exec {
-                executable = 'markdown'
-                args = ['README.markdown']
-                standardOutput = os
-            }
-            outputs.files.singleFile.text = os.toString()
+        licenses {
+          license {
+            name 'GNU GENERAL PUBLIC LICENSE Version 2, June 1991'
+            url 'https://www.gnu.org/licenses/old-licenses/gpl-2.0.fr.html'
+          }
         }
+
+        developers {
+          developer {
+            name 'Christophe Leroy'
+            email 'christophe.leroy@hardis.fr'         
+            organization 'Hardis'
+            organizationUrl 'http://www.hardis-group.com'   
+          }        
+        }
+      }
     }
+  }
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    appendix 'hardisgroupcom'
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    appendix 'hardisgroupcom'
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-
-}
-
-artifacts {
-    archives sourcesJar
-    archives javadocJar
-}
-
-task assembleBinaryDistro(type: Tar) {
-    compression 'gzip'
-
-    from (projectDir) {
-        include 'build.gradle'
-        include 'LICENSE'
-        include 'README.markdown'
-        include 'etc/*.xml'
-    }
-    from generateHtmlFromMarkdown.outputs
-
-    into('lib') { 
-      from jar.outputs
-      from sourcesJar.outputs
-    }
-    into('javadoc') { from javadoc.outputs }
-    into('src/main') { from sourceSets.main.allJava }
-    into('src/test') { from sourceSets.test.allJava }
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile files(org.gradle.internal.jvm.Jvm.current().toolsJar)     
+    testCompile "junit:junit:4.11" 
 }
 
 // Get the git commit hash for the current tree using the system git executable.
