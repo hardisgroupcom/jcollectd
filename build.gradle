@@ -61,6 +61,8 @@ task assembleBinaryDistro(type: Tar) {
     into('src/test') { from sourceSets.test.allJava }
 }
 
+afterReleaseBuild.dependsOn uploadArchives
+
 artifacts {
     archives sourcesJar
     archives javadocJar
