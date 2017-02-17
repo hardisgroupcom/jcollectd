@@ -7,7 +7,6 @@ apply plugin: 'net.researchgate.release'
 
 group = 'com.hardis.collectd'
 archivesBaseName = "jcollectd"
-version = '1.0.4-SNAPSHOT'
 
 repositories { jcenter() }
 
