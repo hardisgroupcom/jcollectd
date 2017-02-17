@@ -121,7 +121,7 @@ uploadArchives {
 
         scm {
           connection 'scm:git:https://github.com/hardisgroupcom/jcollectd.git'
-          developerConnection 'scm:git:ssh://github.com/hardisgroupcom/jcollectd.git'
+          developerConnection 'scm:git:https://github.com/hardisgroupcom/jcollectd.git'
           url 'https://github.com/hardisgroupcom/jcollectd'
         }
 
