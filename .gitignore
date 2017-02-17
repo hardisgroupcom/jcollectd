@@ -6,3 +6,4 @@ build
 *.iml
 README.html
 /bin/
+/.project

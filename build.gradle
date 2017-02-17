@@ -3,10 +3,11 @@ import static org.gradle.api.JavaVersion.*
 apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'signing'
+apply plugin: 'net.researchgate.release'
 
 group = 'com.hardis.collectd'
 archivesBaseName = "jcollectd"
-version = '1.0.3-SNAPSHOT'
+version = '1.0.4-SNAPSHOT'
 
 repositories { jcenter() }
 
@@ -102,10 +103,12 @@ uploadArchives {
     mavenDeployer {
       beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {       
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: project.ext.mavenUser, password: project.ext.mavenPassword)
       }
 
       snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: project.ext.mavenUser, password: project.ext.mavenPassword)
       }
 
       pom.project {
@@ -130,10 +133,8 @@ uploadArchives {
 
         developers {
           developer {
-            name 'Christophe Leroy'
-            email 'christophe.leroy@hardis.fr'         
-            organization 'Hardis'
-            organizationUrl 'http://www.hardis-group.com'   
+            name 'Doug MacEachern'           
+            organization 'Hyperic' 
           }        
         }
       }
@@ -145,6 +146,17 @@ uploadArchives {
 dependencies {
     compile files(org.gradle.internal.jvm.Jvm.current().toolsJar)     
     testCompile "junit:junit:4.11" 
+}
+
+buildscript {
+  repositories {
+    maven {
+      url 'https://plugins.gradle.org/m2/'
+    }
+  }
+  dependencies {
+    classpath 'net.researchgate:gradle-release:2.4.0'
+  }
 }
 
 // Get the git commit hash for the current tree using the system git executable.
