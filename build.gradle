@@ -61,6 +61,10 @@ task assembleBinaryDistro(type: Tar) {
     into('src/test') { from sourceSets.test.allJava }
 }
 
+task wrapper(type: Wrapper) {
+   gradleVersion = '3.3' //version required
+}
+
 afterReleaseBuild.dependsOn uploadArchives
 
 artifacts {
